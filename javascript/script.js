@@ -22,6 +22,18 @@ const winningCombinations = [
     [2, 4, 6]
 ]
 
+// We will loop through these variables to check for a draw
+const one = document.querySelector('#one')
+const two = document.querySelector('#two')
+const three = document.querySelector('#three')
+const four = document.querySelector('#four')
+const five = document.querySelector('#five')
+const six = document.querySelector('#six')
+const seven = document.querySelector('#seven')
+const eight = document.querySelector('#eight')
+const nine = document.querySelector('#nine')
+let draw = [one, two, three, four, five, six, seven, eight, nine]
+
 // A little syntactical sugar to build our game below
 class Game{
     constructor(playerOne, playerTwo){
@@ -60,6 +72,12 @@ class Game{
         }
     }
     checkForWinner(){
+        //Loop through array to check if the game is a draw
+        let tie = draw.every(item => item.innerText !== '')
+        if(tie){
+            pop.style.display = 'block'
+            display.innerText = 'ITS A DRAW!'
+        }
         //Loop through each array of our winning combinations, if EVERY condition is 
         //satisfied then the game will end and a pop-up will appear
         winningCombinations.forEach((answer)=>{
