@@ -106,3 +106,33 @@ h1{
     padding: 8px;
     cursor: pointer;
 }
+
+/* Pop-Up */
+.display{
+    color: white;
+    font-size: 1.5em;
+    text-align: center;
+    margin-top: .5em;
+    margin-bottom: 1em;
+}
+
+.hide{
+    display: none;
+}
+
+.pop h5{
+    font-size: 1.5em;
+    margin-top: 5%;
+    font-family: 'Orelega One', cursive;
+}
+
+.pop{
+    border: 5px solid rgb(60, 15, 65);
+    width: 50%;
+    height: 200px;
+    margin: 0 auto;
+    position: relative;
+    bottom: 45%;
+    background-color: rgba(0, 0, 0, .85);
+    border-radius: 30px;
+}

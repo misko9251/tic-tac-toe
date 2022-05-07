@@ -1,10 +1,17 @@
-let cells = document.querySelectorAll('.cell')
-cells = Array.from(cells) // create an array containing all of the boxes
+// We will use this variable to loop through node list and add event listener
+const boxes = document.querySelectorAll('.cell')
 
-let currentPlayer = 'X' // the game starts with player X
+// We will use this variable to change the inner text and show who wins the game
+const display = document.querySelector('.display')
 
-//The winning combinations for tic-tac-toe is below
-let winningCombinations = [
+// We will use this variable as our container for our hidden pop-up and toggle it later
+const pop = document.querySelector('.hide')
+
+// We will use this variable to keep track of which turn it is
+let count = 0;
+
+// We will use this variable to loop through winning scenarios
+const winningCombinations = [
     [0, 1, 2],
     [3, 4, 5],
     [6, 7, 8],
@@ -15,64 +22,65 @@ let winningCombinations = [
     [2, 4, 6]
 ]
 
-cells.forEach(function(cell){ //forEach loop to run for each item in our cells array that we created in line 2
-    cell.addEventListener('click', function(){ // if we click a cell, run the function below
-        if(cell.innerText !== '') return // function will check if cell is empty, if NOT empty, leave it alone
-        cell.innerText = currentPlayer // on first run, this line will input an X
-        checkForWinner() // run this function which starts on line 28 to see if we have a winner
-        currentPlayer = currentPlayer == 'X' ? 'O' : 'X' // if current player is 'X', then swap to 'O' and keep cycling
-    })
-})
-
-function checkForWinner(){ // we call this function on line 22 initially and every time a player enters their move
-    winningCombinations.forEach(function(combination){ //forEach loop to run for every array in our variable on line 7
-        let check = combination.every(idx => cells[idx].innerText == currentPlayer) // check if the inner text in each winning combo array is equal to current player, does [0,1,2] == [x, x, x], etc?
-        if(check){ // if the above returns true, then we execute the code below on line 31, otherwise we exit out of this function for now
-            document.querySelector('h4').innerText = `${currentPlayer} has won!`
+// A little syntactical sugar to build our game below
+class Game{
+    constructor(playerOne, playerTwo){
+        this._playerOne = playerOne
+        this._playerTwo = playerTwo
+        this.boxClicked()
+    }
+    //Getters so player is not changed when game launches
+    get playerOne(){
+        return this._playerOne
+    }
+    get playerTwo(){
+        return this._playerTwo
+    }
+    //Loop through each box, if box is clicked, fire the playGame function
+    boxClicked(){
+        for(let box of boxes){
+            box.addEventListener('click', this.playGame) 
         }
-    })
+    }
+    //Function fires when a box is clicked
+    playGame(){
+        //If a box is NOT an empty string, do not allow other player to overwrite their move
+        if(document.getElementById(this.id).innerText !== ''){
+            return
+        }else if(count % 2 == 0){
+            document.getElementById(this.id).innerText = `${game.playerOne}`
+            count++
+            //Check for winner function will fire after each move
+            game.checkForWinner()
+        }else if(count % 2 !== 0){
+            document.getElementById(this.id).innerText = `${game.playerTwo}`
+            count++
+            //Check for winner function will fire after each move
+            game.checkForWinner()
+        }
+    }
+    checkForWinner(){
+        //Loop through each array of our winning combinations, if EVERY condition is 
+        //satisfied then the game will end and a pop-up will appear
+        winningCombinations.forEach((answer)=>{
+            let check = answer.every(item=>boxes[item].innerText == `${game.playerOne}`)
+            let check2 = answer.every(item=>boxes[item].innerText == `${game.playerTwo}`)
+            if(check){
+                pop.style.display = 'block'
+                display.innerText = 'PLAYER ONE WINS!'
+            }if(check2){
+                pop.style.display = 'block'
+                display.innerText = 'PLAYER TWO WINS!'
+            }
+        })
+    }    
 }
 
-//Button to refresh page and play again
+//Create game
+let game = new Game('X', 'O')
+
+//Refresh page when game is complete
 document.querySelector('button').addEventListener('click', playAgain)
 function playAgain(){
     location.reload()
 }
-
-// let cells = document.querySelectorAll('.cell')
-// cells = Array.from(cells) // create an array containing all of the boxes
-// cells.forEach(function(cell){
-//     cell.addEventListener('click', play)
-// })
-
-// let game = {
-
-//     currentPlayer: 'X',
-//     winningCombinations: [
-//         [0, 1, 2],
-//         [3, 4, 5],
-//         [6, 7, 8],
-//         [0, 3, 6],
-//         [1, 4, 7],
-//         [2, 5, 8],
-//         [0, 4, 8],
-//         [2, 4, 6]
-//     ],
-//     play(){
-//         if(cell.innerText !== '') return
-//         cell.innerText = this.currentPlayer
-//         checkForWinner()
-//         this.currentPlayer = this.currentPlayer = 'X' ? 'O' : 'X'
-//     },
-//     checkForWinner(){
-//         winningCombinations.forEach(function(combination){
-//             let check = combination.every(idx=>cells[idx].innerText==currentPlayer)
-//             if(check){
-//                 document.querySelector('h4').innerText = `${currentPlayer} has won!`
-//             }
-//         })
-//     }
-
-
-
-// }
