@@ -72,7 +72,7 @@ class Game{
         }
     }
     checkForWinner(){
-        //Loop through array to check if the game is a draw
+        //Loop through array to check if the game is a draw/tie
         let tie = draw.every(item => item.innerText !== '')
         if(tie){
             pop.style.display = 'block'
